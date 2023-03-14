@@ -166,3 +166,113 @@ void PrintLStack(LinkStack S)
 }
 ```
 
+
+
+### 3.栈的应用-括号匹配
+
+![image-20230314203110748](assets/image-20230314203110748.png)
+
+实现代码：
+
+```cpp
+#include <stdio.h>
+
+#define MaxSize 50
+typedef char ElemType;
+typedef struct {
+    ElemType data[MaxSize];
+    int top;
+}SqStack;
+
+void InitStack(SqStack &S)
+{
+    S.top=-1;
+}
+
+bool StackEmpty(SqStack S)
+{
+    if(S.top==-1)
+    {
+        return true;
+    } else{
+        return false;
+    }
+}
+
+bool Push(SqStack &S,ElemType x)
+{
+    if(S.top==MaxSize-1)
+    {
+        return false;
+    }
+    S.data[++S.top]=x;
+    return true;
+}
+
+bool Pop(SqStack &S,ElemType &x)
+{
+    if(S.top==-1)
+    {
+        return false;
+    }
+    x=S.data[S.top--];
+    return true;
+}
+
+bool GetTop(SqStack S,ElemType &x)
+{
+    if(S.top==-1)
+    {
+        return false;
+    }
+    x=S.data[S.top];
+    return true;
+}
+
+bool bracketCheck(char str[],int length)
+{
+    SqStack S;
+    InitStack(S);
+    for(int i=0;i<length;i++)
+    {
+        if(str[i] == '(' || str[i] == '[' || str[i] == '{')
+        {
+            Push(S,str[i]);
+        } else{
+            if(StackEmpty(S))
+            {
+                return false;
+            }
+            char topElem;
+            Pop(S,topElem);
+            if(str[i] == ')' && topElem != '(')
+            {
+                return false;
+            }
+            if(str[i] == ']' && topElem != '[')
+            {
+                return false;
+            }
+            if(str[i] == '}' && topElem != '{')
+            {
+                return false;
+            }
+        }
+    }
+    return StackEmpty(S);
+}
+
+int main(){
+    bool res;
+    res = bracketCheck("()()(",5);
+    if(res)
+    {
+        printf("match\n");
+    } else{
+        printf("fail\n");
+    }
+    return 0;
+}
+```
+
+![image-20230314203150177](assets/image-20230314203150177.png)
