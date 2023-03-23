@@ -444,6 +444,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#3-" class="md-nav__link">
+    3.栈的应用-括号匹配
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -596,6 +603,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#3-" class="md-nav__link">
+    3.栈的应用-括号匹配
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -739,6 +753,109 @@ void PrintLStack(LinkStack S)
     }
 }
 </code></pre>
+<h3 id="3-">3.栈的应用-括号匹配</h3>
+<p><img alt="image-20230314203110748" src="../assets/image-20230314203110748.png" /></p>
+<p>实现代码：</p>
+<pre><code class="language-cpp">#include &lt;stdio.h&gt;
+
+#define MaxSize 50
+typedef char ElemType;
+typedef struct {
+    ElemType data[MaxSize];
+    int top;
+}SqStack;
+
+void InitStack(SqStack &amp;S)
+{
+    S.top=-1;
+}
+
+bool StackEmpty(SqStack S)
+{
+    if(S.top==-1)
+    {
+        return true;
+    } else{
+        return false;
+    }
+}
+
+bool Push(SqStack &amp;S,ElemType x)
+{
+    if(S.top==MaxSize-1)
+    {
+        return false;
+    }
+    S.data[++S.top]=x;
+    return true;
+}
+
+bool Pop(SqStack &amp;S,ElemType &amp;x)
+{
+    if(S.top==-1)
+    {
+        return false;
+    }
+    x=S.data[S.top--];
+    return true;
+}
+
+bool GetTop(SqStack S,ElemType &amp;x)
+{
+    if(S.top==-1)
+    {
+        return false;
+    }
+    x=S.data[S.top];
+    return true;
+}
+
+bool bracketCheck(char str[],int length)
+{
+    SqStack S;
+    InitStack(S);
+    for(int i=0;i&lt;length;i++)
+    {
+        if(str[i] == '(' || str[i] == '[' || str[i] == '{')
+        {
+            Push(S,str[i]);
+        } else{
+            if(StackEmpty(S))
+            {
+                return false;
+            }
+            char topElem;
+            Pop(S,topElem);
+            if(str[i] == ')' &amp;&amp; topElem != '(')
+            {
+                return false;
+            }
+            if(str[i] == ']' &amp;&amp; topElem != '[')
+            {
+                return false;
+            }
+            if(str[i] == '}' &amp;&amp; topElem != '{')
+            {
+                return false;
+            }
+        }
+    }
+    return StackEmpty(S);
+}
+
+int main(){
+    bool res;
+    res = bracketCheck(&quot;()()(&quot;,5);
+    if(res)
+    {
+        printf(&quot;match\n&quot;);
+    } else{
+        printf(&quot;fail\n&quot;);
+    }
+    return 0;
+}
+</code></pre>
+<p><img alt="image-20230314203150177" src="../assets/image-20230314203150177.png" /></p>
 
 
 
